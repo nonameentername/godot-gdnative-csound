@@ -1,0 +1,8 @@
+-I.
+-Igodot-cpp/godot_headers
+-Igodot-cpp/include
+-Igodot-cpp/include/core
+-Igodot-cpp/include/gen
+-I/usr/include/csound
+-Isrc
+-std=c++17
