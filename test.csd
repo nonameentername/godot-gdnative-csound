@@ -1,12 +1,13 @@
 <CsoundSynthesizer>
 <CsOptions>
--+rtmidi=jack -+rtaudio=jack -i adc -o dac -B 4096 -Ma --midi-key-cps=4 --midi-velocity-amp=5
+-i adc -o dac -B 4096 -Ma --midi-key-cps=4 --midi-velocity-amp=5 -n
 </CsOptions>
 <CsInstruments>
 
-sr = 48000
+sr = 44100
 ksmps = 128
 nchnls = 2
+0dbfs = 1
 
 
 instr 1
