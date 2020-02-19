@@ -14,6 +14,7 @@
 #include "MidiMessage.h"
 #include <queue>
 #include <memory>
+#include <thread>
 
 
 namespace godot {
@@ -22,6 +23,8 @@ class GDCSoundAudioStreamPlayer : public AudioStreamPlayer {
     GODOT_CLASS(GDCSoundAudioStreamPlayer, AudioStreamPlayer)
 
 private:
+    bool stop_thread = false;
+    std::thread my_thread;
     int sampleCount;
     MYFLT *spin, *spout;
     MYFLT scale;
@@ -44,8 +47,11 @@ public:
 
     void _init();
     void _process(float delta);
-    void sendNoteOn(int channel, int note, int velocity);
-    void sendNoteOff(int channel, int note);
+    void sendNoteOn(int channel, int key, int velocity);
+    void sendNoteOff(int channel, int key);
+    void sendControlChange(int channel, int number, float value);
+    void sendControlChannel(String channel, float value);
+    void threadMain();
 };
 
 }

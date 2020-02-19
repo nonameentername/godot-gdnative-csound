@@ -46,4 +46,9 @@ public class main : Node2D
         }
     }
 
+    public void _on_VSlider_value_changed(float value)
+    {
+        midi_io.SendControlChannel("cutoff", value);
+    }
+
 }

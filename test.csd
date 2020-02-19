@@ -19,7 +19,8 @@ iDec = 0.4
 iSus = 0.6
 iRel = 0.7
 ;iCutoff = 5000
-kCutoff ctrl7  1, 56, 1000, 3000
+;kCutoff ctrl7  1, 1, 1000, 3000
+kCutoff chnget "cutoff"
 
 iRes = .4
 kEnv madsr iAtt, iDec, iSus, iRel
@@ -39,7 +40,8 @@ iDec = 0.4
 iSus = 0.5
 iRel = 0.7
 ;iCutoff = 5000
-kCutoff ctrl7  1, 56, 1000, 3000
+;kCutoff ctrl7  1, 56, 1000, 3000
+kCutoff chnget "cutoff"
 
 iRes = .4
 kEnv madsr iAtt, iDec, iSus, iRel

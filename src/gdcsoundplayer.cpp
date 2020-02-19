@@ -8,10 +8,12 @@ using namespace smf;
 std::queue<std::unique_ptr<smf::MidiMessage>> GDCSoundAudioStreamPlayer::midi_queue;
 
 
-GDCSoundAudioStreamPlayer::GDCSoundAudioStreamPlayer() {
+GDCSoundAudioStreamPlayer::GDCSoundAudioStreamPlayer() : my_thread(&GDCSoundAudioStreamPlayer::threadMain, this)  {
 }
 
 GDCSoundAudioStreamPlayer::~GDCSoundAudioStreamPlayer() {
+    stop_thread = true;
+    my_thread.join();
     delete csound;
 }
 
@@ -42,7 +44,12 @@ void GDCSoundAudioStreamPlayer::_init() {
 }
 
 void GDCSoundAudioStreamPlayer::_process(float delta) {
-    fill_buffer();
+}
+
+void GDCSoundAudioStreamPlayer::threadMain() {
+    while (!stop_thread) {
+        fill_buffer();
+    }
 }
 
 void GDCSoundAudioStreamPlayer::fill_buffer() {
@@ -81,16 +88,26 @@ void GDCSoundAudioStreamPlayer::fill_buffer() {
     }
 }
 
-void GDCSoundAudioStreamPlayer::sendNoteOn(int channel, int note, int velocity) {
+void GDCSoundAudioStreamPlayer::sendNoteOn(int channel, int key, int velocity) {
     unique_ptr<MidiMessage> midi_message (new MidiMessage());
-    midi_message->makeNoteOn(channel, note, velocity);
+    midi_message->makeNoteOn(channel, key, velocity);
     midi_queue.push(move(midi_message));
 }
 
-void GDCSoundAudioStreamPlayer::sendNoteOff(int channel, int note) {
+void GDCSoundAudioStreamPlayer::sendNoteOff(int channel, int key) {
     unique_ptr<MidiMessage> midi_message (new MidiMessage());
-    midi_message->makeNoteOff(channel, note);
+    midi_message->makeNoteOff(channel, key);
     midi_queue.push(move(midi_message));
+}
+
+void GDCSoundAudioStreamPlayer::sendControlChange(int channel, int number, float value) {
+    unique_ptr<MidiMessage> midi_message (new MidiMessage());
+    midi_message->makeController(channel, number, value);
+    midi_queue.push(move(midi_message));
+}
+
+void GDCSoundAudioStreamPlayer::sendControlChannel(godot::String channel, float value) {
+    csound->SetControlChannel(channel.alloc_c_string(), value);
 }
 
 int GDCSoundAudioStreamPlayer::WriteMidiData(CSOUND *csound, void *userData,
@@ -119,4 +136,6 @@ void GDCSoundAudioStreamPlayer::_register_methods() {
     register_method("_process", &GDCSoundAudioStreamPlayer::_process);
     register_method("send_note_on", &GDCSoundAudioStreamPlayer::sendNoteOn);
     register_method("send_note_off", &GDCSoundAudioStreamPlayer::sendNoteOff);
+    register_method("send_control_change", &GDCSoundAudioStreamPlayer::sendControlChange);
+    register_method("send_control_channel", &GDCSoundAudioStreamPlayer::sendControlChannel);
 }

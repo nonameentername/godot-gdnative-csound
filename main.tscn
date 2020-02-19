@@ -61,6 +61,17 @@ text = "G4"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="VSlider" type="VSlider" parent="."]
+margin_left = 378.0
+margin_top = 115.0
+margin_right = 413.0
+margin_bottom = 241.0
+max_value = 3000.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="toggled" from="CheckButton" to="." method="_on_CheckButton_toggled"]
 [connection signal="toggled" from="CheckButton2" to="." method="_on_CheckButton2_toggled"]
 [connection signal="toggled" from="CheckButton3" to="." method="_on_CheckButton3_toggled"]
+[connection signal="value_changed" from="VSlider" to="." method="_on_VSlider_value_changed"]
