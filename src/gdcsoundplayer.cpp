@@ -100,12 +100,6 @@ void GDCSoundAudioStreamPlayer::sendNoteOff(int channel, int key) {
     midi_queue.push(move(midi_message));
 }
 
-void GDCSoundAudioStreamPlayer::sendControlChange(int channel, int number, float value) {
-    unique_ptr<MidiMessage> midi_message (new MidiMessage());
-    midi_message->makeController(channel, number, value);
-    midi_queue.push(move(midi_message));
-}
-
 void GDCSoundAudioStreamPlayer::sendControlChannel(godot::String channel, float value) {
     csound->SetControlChannel(channel.alloc_c_string(), value);
 }
@@ -136,6 +130,5 @@ void GDCSoundAudioStreamPlayer::_register_methods() {
     register_method("_process", &GDCSoundAudioStreamPlayer::_process);
     register_method("send_note_on", &GDCSoundAudioStreamPlayer::sendNoteOn);
     register_method("send_note_off", &GDCSoundAudioStreamPlayer::sendNoteOff);
-    register_method("send_control_change", &GDCSoundAudioStreamPlayer::sendControlChange);
     register_method("send_control_channel", &GDCSoundAudioStreamPlayer::sendControlChannel);
 }

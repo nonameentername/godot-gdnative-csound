@@ -22,11 +22,6 @@ public class MidiIO : Node
         csound.Call("send_note_off", channel, key);
     }
 
-    public void SendControlChange(int channel, int number, float value)
-    {
-        csound.Call("send_control_change", channel, number, value);
-    }
-
     public void SendControlChannel(string channel, float value)
     {
         csound.Call("send_control_channel", channel, value);

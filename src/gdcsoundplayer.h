@@ -49,7 +49,6 @@ public:
     void _process(float delta);
     void sendNoteOn(int channel, int key, int velocity);
     void sendNoteOff(int channel, int key);
-    void sendControlChange(int channel, int number, float value);
     void sendControlChannel(String channel, float value);
     void threadMain();
 };
