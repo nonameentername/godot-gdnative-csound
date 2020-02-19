@@ -18,8 +18,6 @@ opts.Add(PathVariable('target_name', 'The library name.', 'libgdcsoundplayer', P
 godot_headers_path = "godot-cpp/godot_headers/"
 cpp_bindings_path = "godot-cpp/"
 cpp_library = "libgodot-cpp"
-csound_include = "/usr/include/csound"
-csound_library = "csound64"
 
 # only support 64 at this time..
 bits = 64
@@ -41,22 +39,26 @@ if env['platform'] == '':
 
 # Check our platform specifics
 if env['platform'] == "osx":
+    env.Append(CPPPATH=['/usr/local/opt/csound/include/csound'])
     env['target_path'] += 'osx/'
     cpp_library += '.osx'
     if env['target'] in ('debug', 'd'):
-        env.Append(CCFLAGS = ['-g','-O2', '-arch', 'x86_64'])
-        env.Append(LINKFLAGS = ['-arch', 'x86_64'])
+        env.Append(CCFLAGS = ['-g','-O2', '-arch', 'x86_64', '-std=c++17'])
+        env.Append(LINKFLAGS = ['-arch', 'x86_64', '-framework', 'CsoundLib64', '-F/usr/local/opt/csound/Frameworks'])
     else:
-        env.Append(CCFLAGS = ['-g','-O3', '-arch', 'x86_64'])
-        env.Append(LINKFLAGS = ['-arch', 'x86_64'])
+        env.Append(CCFLAGS = ['-g','-O3', '-arch', 'x86_64', '-std=c++17'])
+        env.Append(LINKFLAGS = ['-arch', 'x86_64', '-framework', 'CsoundLib64', '-F/usr/local/opt/csound/Frameworks'])
 
 elif env['platform'] in ('x11', 'linux'):
+    env.Append(CPPPATH=["/usr/include/csound"])
     env['target_path'] += 'x11/'
     cpp_library += '.linux'
     if env['target'] in ('debug', 'd'):
         env.Append(CCFLAGS = ['-fPIC', '-g3','-Og', '-std=c++17'])
     else:
         env.Append(CCFLAGS = ['-fPIC', '-g','-O3', '-std=c++17'])
+    env.Append(LIBPATH=['/usr/local/lib64'])
+    env.Append(LIBS=["csound64"])
 
 elif env['platform'] == "windows":
     env['target_path'] += 'win64/'
@@ -79,9 +81,9 @@ else:
 cpp_library += '.' + str(bits)
 
 # make sure our binding library is properly includes
-env.Append(CPPPATH=['.', godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/', csound_include])
-env.Append(LIBPATH=[cpp_bindings_path + 'bin/', '/usr/local/lib64'])
-env.Append(LIBS=[cpp_library, csound_library])
+env.Append(CPPPATH=['.', godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/'])
+env.Append(LIBPATH=[cpp_bindings_path + 'bin/'])
+env.Append(LIBS=[cpp_library])
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
 env.Append(CPPPATH=['src/'])
