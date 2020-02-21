@@ -3,6 +3,7 @@
 [ext_resource path="res://bin/gdcsoundplayer.gdns" type="Script" id=1]
 
 [sub_resource type="AudioStreamGenerator" id=1]
+buffer_length = 0.2
 
 [node name="csound" type="AudioStreamPlayer"]
 stream = SubResource( 1 )

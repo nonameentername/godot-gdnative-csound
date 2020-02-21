@@ -8,7 +8,7 @@ How to Install
 
 Install system dependencies for Ubuntu:
 
-    apt install libcsound64-dev
+    apt install libcsnd-dev
 
 Install system dependencies for OSX:
 
