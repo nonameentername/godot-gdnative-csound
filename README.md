@@ -1,3 +1,9 @@
+DEPRECATED
+==========
+
+>[!WARNING]
+>This project is no longer supported, please consider using [godot-csound](https://github.com/nonameentername/godot-csound) instead.
+
 godot-gdnative-csound
 =====================
 
